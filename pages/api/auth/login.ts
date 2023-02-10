@@ -1,7 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import connectDB from "../../../utils/mongoConnect";
-import User from "../../../models/User";
+import clientPromise from "../../../utils/mongodb";
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -33,70 +32,41 @@ export default async function handler(
       user: undefined,
     });
   }
-  let existingUser: any;
-  await connectDB()
-    .then(async () => {
-      try {
-        existingUser = await User.findOne({ email: email });
-      } catch (err) {
-        console.log(err);
-        res.status(500).json({
-          error: "Something went wrong",
-          success: "",
-          token: "",
-          user: undefined,
-        });
-      }
-      if (!existingUser) {
-        res.status(422).json({
-          error: "User does not exist",
-          success: "",
-          token: "",
-          user: undefined,
-        });
-      }
-      let isValidPassword = false;
-      try {
-        isValidPassword = await bcrypt.compare(password, existingUser.password);
-      } catch (err) {
-        console.log(err);
-        res.status(500).json({
-          error: "Something went wrong",
-          success: "",
-          token: "",
-          user: undefined,
-        });
-      }
-      if (!isValidPassword) {
-        res.status(422).json({
-          error: "Invalid credentials",
-          success: "",
-          token: "",
-          user: undefined,
-        });
-      }
-      const token = jwt.sign(
-        {
-          id: existingUser._id,
-          email: existingUser.email,
-          name: existingUser.name,
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: "1d" }
-      );
-      const Profile = {
-        id: existingUser._id,
-        name: existingUser.name,
-        email: existingUser.email,
-      };
-      res.status(200).json({
-        success: "User logged in",
-        token: token,
-        error: "",
-        user: Profile,
+  try {
+    const client = await clientPromise;
+    const db = client.db("Shopping");
+    /// Find user by email
+    const User = await db.collection("users").findOne({ email: email });
+    if (!User) {
+      return res.status(422).json({
+        error: "Invalid email or password",
+        success: "",
+        token: "",
+        user: undefined,
       });
-    })
-    .catch((err) => {
-      console.log(err);
+    }
+    /// Compare password
+    const isMatch = await bcrypt.compare(password, User.password);
+    if (!isMatch) {
+      return res.status(422).json({
+        error: "Invalid email or password",
+        success: "",
+        token: "",
+        user: undefined,
+      });
+    }
+    /// Create and assign a token
+    const token = jwt.sign(
+      { _id: User._id, email: User.email, name: User.name },
+      process.env.JWT_SECRET
+    );
+    res.status(200).json({
+      error: "",
+      success: "Login successful",
+      token: token,
+      user: User,
     });
+  } catch (error) {
+    console.log(error);
+  }
 }

@@ -22,7 +22,6 @@ export default function Login() {
       alert("Login failed");
     }
   }
-
   return (
     <div className="bg-red-100 flex flex-col items-center justify-center min-h-screen py-2">
       <div className="flex flex-col items-center justify-center bg-white p-4 rounded-lg shadow-lg">

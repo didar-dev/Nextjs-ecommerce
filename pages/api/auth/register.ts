@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import connectDB from "../../../utils/mongoConnect";
+import connectDB from "../../../utils/mongodb";
 import User from "../../../models/User";
 const bcrypt = require("bcryptjs");
 

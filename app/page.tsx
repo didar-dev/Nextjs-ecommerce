@@ -4,8 +4,9 @@ type User = {
   name: string;
   email: string;
 };
-type Profile = {
+type Respon = {
   user: User;
+  Profile: any;
 };
 
 async function getProfile(token: string) {
@@ -15,21 +16,23 @@ async function getProfile(token: string) {
       Authorization: `Bearer ${token}`,
     },
   });
-  let profile: Profile = await res.json();
-  useUserStore.setState({ user: profile }); // Set store
+  let respon: Respon = await res.json();
   if (res.status !== 200) {
     return null;
   } else {
-    return profile;
+    return respon.Profile;
   }
 }
 export default async function Page() {
-  let user: any = null;
   const nextCookies = cookies();
-  const token = nextCookies.get("token")?.value; // Find cookie
+  const token = nextCookies.get("token")?.value;
   if (token) {
-    user = await getProfile(token);
+    getProfile(token).then((profile) => {
+      console.log(profile);
+    });
+  } else {
+    console.log("No token");
   }
 
-  return <div> {user ? user.profile.name : "Not logged in"} </div>;
+  return <div></div>;
 }

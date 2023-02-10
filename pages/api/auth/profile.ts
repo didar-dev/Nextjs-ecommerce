@@ -1,16 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import connectDB from "../../../utils/mongoConnect";
-import User from "../../../models/User";
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+import clientPromise from "../../../utils/mongodb";
 
+const jwt = require("jsonwebtoken");
 type Data = {
   error: string;
   success: string;
   token: string;
   profile: any;
 };
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
@@ -34,50 +31,23 @@ export default async function handler(
   }
   /// verify token and get user
   const Token = jwt.verify(token, process.env.JWT_SECRET);
-  if (!Token) {
+  const client = await clientPromise;
+  const db = client.db("Shopping");
+  const User = await db
+    .collection("users")
+    .findOne({ email: Token.email }, { projection: { name: 1, email: 1 } });
+  if (!User) {
     return res.status(422).json({
-      error: "Invalid token",
+      error: "No user found",
       success: "",
       token: "",
       profile: undefined,
     });
   }
-  let existingUser: any;
-  await connectDB()
-    .then(async () => {
-      try {
-        existingUser = await User.findOne({ _id: Token.id });
-      } catch (err) {
-        console.log(err);
-        res.status(500).json({
-          error: "Something went wrong",
-          success: "",
-          token: "",
-          profile: undefined,
-        });
-      }
-      if (!existingUser) {
-        res.status(422).json({
-          error: "User does not exist",
-          success: "",
-          token: "",
-          profile: undefined,
-        });
-      }
-      res.status(200).json({
-        error: "",
-        success: "User found",
-        token: "",
-        profile: existingUser,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({
-        error: "Something went wrong",
-        success: "",
-        token: "",
-        profile: undefined,
-      });
-    });
+  return res.status(200).json({
+    error: "",
+    success: "User logged in successfully",
+    token: token,
+    profile: User,
+  });
 }

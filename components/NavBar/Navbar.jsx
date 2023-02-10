@@ -2,6 +2,8 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
+import { useUserStore } from "../../utils/store";
+
 const navigation = [
   { name: "About", href: "about", current: false },
   { name: "Projects", href: "projects", current: false },
@@ -13,6 +15,7 @@ function classNames(...classes) {
 }
 
 export default function Example() {
+  const user = useUserStore((state) => state.user);
   return (
     <Disclosure as="nav" className="bg-[#111111] w-full">
       {({ open }) => (
@@ -32,7 +35,7 @@ export default function Example() {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <p className="text-2xl font-semibold text-gray-300 cursor-pointer tracking-widest">
-                    DiDAR.DEV
+                    Shopping
                   </p>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
