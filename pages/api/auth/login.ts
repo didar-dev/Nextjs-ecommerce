@@ -12,10 +12,18 @@ type Data = {
   user: any;
 };
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      error: "Method not allowed",
+      success: "",
+      token: "",
+      user: undefined,
+    });
+  }
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(422).json({
@@ -26,7 +34,7 @@ export default function handler(
     });
   }
   let existingUser: any;
-  connectDB()
+  await connectDB()
     .then(async () => {
       try {
         existingUser = await User.findOne({ email: email });
