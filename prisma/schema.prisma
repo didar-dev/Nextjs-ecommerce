@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  Email      String   @unique
+  Name       String?
+  Password   String
+  GoogleId   String?
+  FacebookId String?
+  GithubId   String?
+  Role       String   @default("user")
+  Verified   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  Orders     Order[]
+}
+
+model Slide {
+  id          Int      @id @default(autoincrement())
+  Title       String
+  Subtitle    String
+  Title_ku    String?
+  Subtitle_ku String?
+  Title_ar    String?
+  Subtitle_ar String?
+  Image       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Product {
+  id             Int       @id @default(autoincrement())
+  Name           String
+  Description    String
+  Price          Int
+  Discount       Int
+  Thumbnail      String
+  Images         String[]
+  Stock          Int
+  Name_ku        String?
+  Description_ku String?
+  Name_ar        String?
+  Description_ar String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  Category       Category? @relation(fields: [categoryId], references: [id])
+  categoryId     Int?
+  Brand          Brand?    @relation(fields: [brandId], references: [id])
+  brandId        Int?
+  Order          Order?    @relation(fields: [orderId], references: [id])
+  orderId        Int?
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  Name      String
+  Products  Product[]
+  Name_ku   String?
+  Name_ar   String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Brand {
+  id        Int       @id @default(autoincrement())
+  Name      String
+  Products  Product[]
+  Name_ku   String?
+  Name_ar   String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Order {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User?     @relation(fields: [userId], references: [id])
+  userId    Int?
+  Products  Product[]
+  Total     Int
+  Status    String
+}
