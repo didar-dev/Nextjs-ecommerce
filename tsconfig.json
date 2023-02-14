@@ -24,6 +24,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/Login/page.tsx", "app/Login/layout.tsx", "components/NavBar/Navbar.jsx", "middleware.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/Login/page.tsx", "app/Login/layout.tsx", "components/NavBar/Navbar.jsx", "middleware.js", "utils/mongodb.ts"],
   "exclude": ["node_modules"]
 }

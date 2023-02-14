@@ -1,0 +1,15 @@
+[
+  {
+    "_id": { "$oid": "63e966fbd22e9ac2bae463dd1" },
+    "Name": "Laptop",
+    "Description": "",
+    "thumbnail": "fe",
+    "Stock": { "$numberLong": "143" },
+    "Images": [""],
+    "Brand": "Apple",
+    "Price": "",
+    "discountPercentage": { "$numberLong": "23" },
+    "createdAt": { "$date": { "$numberLong": "1675979392887" } },
+    "updatedAt": { "$date": { "$numberLong": "1675979392887" } }
+  }
+]
