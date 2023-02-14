@@ -2,15 +2,14 @@
 import { create } from "zustand";
 type Store = {
   UserInfoJson: string;
+  loading: boolean;
   Add: (value: string) => void;
 };
-
 export const useStore = create<Store>((set) => ({
-  UserInfoJson: "false",
+  UserInfoJson: "",
+  loading: false,
   Add: (value: string) => set({ UserInfoJson: value }),
 }));
-
-/// gt the Token on local storage
 export function GetToken() {
   const Token = localStorage.getItem("token");
   if (Token) {

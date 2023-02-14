@@ -10,7 +10,7 @@ export default function Example() {
     <nav className="w-full bg-gray-800 shadow">
       <div className="justify-between px-2 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
         <div>
-          <div className="flex items-center justify-between py-3 md:py-5 md:block">
+          <div className="flex items-center justify-between py-2  md:block">
             <Link href="/">
               <h2 className="text-2xl text-white font-bold">Shoppy</h2>
             </Link>
@@ -86,15 +86,13 @@ export default function Example() {
           {UserInfoJson ? (
             <div className="flex items-center justify-between py-3 md:py-5 md:block">
               <Link href="/profile">
-                <h2 className="text-2xl text-white font-bold">
-                  {UserInfoJson.name}
-                </h2>
+                <h1 className=" text-white font-bold">{UserInfoJson.name}</h1>
               </Link>
             </div>
           ) : (
             <div className="flex items-center justify-between py-3 md:py-5 md:block">
               <Link href="/login">
-                <h2 className="text-2xl text-white font-bold">Login</h2>
+                <h1 className=" text-white font-bold">Login</h1>
               </Link>
             </div>
           )}
