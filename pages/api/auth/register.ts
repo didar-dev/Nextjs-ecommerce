@@ -1,51 +1,57 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import connectDB from "../../../utils/mongodb";
-import User from "../../../models/User";
+import client from "../../../prisma/client";
 const bcrypt = require("bcryptjs");
-
 type Data = {
-  name: string;
-  error: string;
+  error?: string;
+  success?: string;
+  token?: string;
+  user?: any;
 };
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { email, password, name } = req.body;
-  if (!email || !password || !name) {
-    return res.status(422).json({
-      error: "Please add all the fields",
-      name: "Error",
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+  const { Name, Email, Password } = req.body;
+  if (!Name || !Email || !Password) {
+    return res.status(400).json({ error: "Please fill all fields" });
+  }
+  const user = await client.user.findUnique({
+    where: {
+      Email,
+    },
+  });
+  if (user) {
+    return res
+      .status(400)
+      .json({ error: "User already exists with this email" });
+  }
+  const emailRegex =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (!emailRegex.test(Email)) {
+    return res.status(400).json({ error: "Please enter a valid email" });
+  }
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  if (!passwordRegex.test(Password)) {
+    return res.status(400).json({
+      error: "Password not strong enough",
     });
   }
-
-  /// hash password
-  const hashedPassword = await bcrypt.hash(password, 12);
-  connectDB()
-    .then(() => {
-      const CreatedUser = new User({
-        email: email,
-        password: hashedPassword,
-        name: name,
-      });
-      CreatedUser.save()
-        .then((user: any) => {
-          res.status(200).json({
-            name: "User created",
-            error: "",
-          });
-        })
-        .catch((err: any) => {
-          console.log(err);
-          res.status(500).json({
-            name: "Error creating user",
-            error: "",
-          });
-        });
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(Password, salt);
+  client.user
+    .create({
+      data: {
+        Name,
+        Email,
+        Password: hash,
+      },
     })
-    .catch((err) => {
-      console.log(err);
+    .catch((error: any) => {
+      return res.status(500).json({ error: "Something went wrong" });
     });
+  return res.status(200).json({ success: "User created" });
 }

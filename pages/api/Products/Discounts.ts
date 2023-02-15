@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import clientPromise from "../../utils/mongodb";
+import clientPromise from "../../../utils/mongodb";
 type Data = {
   error?: string;
   success?: string;

@@ -1,4 +1,6 @@
 import "./globals.css";
+import QueryWrapper from "./QueryWrapper";
+
 import Navbar from "@/components/NavBar/Navbar.jsx";
 import Slides from "@/components/Header/Slides";
 // async function getData() {
@@ -20,10 +22,12 @@ export default async function RootLayout({
     <html lang="en">
       <head />
       <body>
-        <Navbar />
-        {/* <Slides data={data} /> */}
+        <QueryWrapper>
+          <Navbar />
+          {/* <Slides data={data} /> */}
 
-        {children}
+          {children}
+        </QueryWrapper>
       </body>
     </html>
   );
