@@ -92,7 +92,7 @@ export default function Example() {
               </div>
             ) : (
               <div className="flex items-center justify-between py-3 md:py-5 md:block">
-                <Link href="/login">
+                <Link href="/Login">
                   <h1 className=" text-white font-bold">Login</h1>
                 </Link>
               </div>

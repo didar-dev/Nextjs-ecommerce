@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.Register-page {
+    @apply flex flex-row flex-wrap items-center justify-center h-screen gap-20;
+    background-color: rgba(245, 245, 245, 1);
+  }
+  .Register-form {
+    @apply rounded-lg flex flex-col p-4 gap-4;
+    width: 400px;
+    max-width: 330px;
+  }
+  .Hinput {
+    @apply outline-none bg-gray-50  text-black text-sm rounded-lg p-2.5 required:ring-red-500 required:border-red-500 border-2 border-gray-200;
+  }
+  .Hbutton {
+    @apply outline-none bg-black  my-1  text-white text-sm rounded-lg p-2.5 shadow-md disabled:opacity-50;
+  }
