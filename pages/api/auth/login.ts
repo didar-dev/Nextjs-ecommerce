@@ -1,72 +1,60 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import clientPromise from "../../../utils/mongodb";
+import client from "../../../prisma/client";
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
 type Data = {
-  error: string;
-  success: string;
-  token: string;
-  user: any;
+  error?: string;
+  success?: string;
+  token?: string;
+  user?: any;
 };
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
   if (req.method !== "POST") {
-    return res.status(405).json({
-      error: "Method not allowed",
-      success: "",
-      token: "",
-      user: undefined,
-    });
+    return res.status(405).json({ error: "Method not allowed" });
   }
-  const { email, password } = req.body;
-  if (!email || !password) {
+  const { Email, Password } = req.body;
+  if (!Email || !Password) {
+    return res.status(400).json({ error: "Please fill all fields" });
+  }
+
+  const user = await client.user.findUnique({
+    where: {
+      Email,
+    },
+    select: {
+      id: true,
+      Email: true,
+      Name: true,
+      Role: true,
+      Password: true,
+    },
+  });
+  if (!user) {
     return res.status(422).json({
-      error: "Please add all the fields",
-      success: "",
-      token: "",
-      user: undefined,
+      error: "Invalid Email or Password",
     });
   }
-  try {
-    const client = await clientPromise;
-    const db = client.db("Shopping");
-    /// Find user by email
-    const User = await db.collection("users").findOne({ email: email });
-    if (!User) {
-      return res.status(422).json({
-        error: "Invalid email or password",
-        success: "",
-        token: "",
-        user: undefined,
-      });
-    }
-    /// Compare password
-    const isMatch = await bcrypt.compare(password, User.password);
-    if (!isMatch) {
-      return res.status(422).json({
-        error: "Invalid email or password",
-        success: "",
-        token: "",
-        user: undefined,
-      });
-    }
-    /// Create and assign a token
-    const token = jwt.sign(
-      { _id: User._id, email: User.email, name: User.name },
-      process.env.JWT_SECRET
-    );
-    res.status(200).json({
-      error: "",
-      success: "Login successful",
-      token: token,
-      user: User,
+  /// check password
+  const isMatch = await bcrypt.compare(Password, user.Password);
+  if (!isMatch) {
+    return res.status(422).json({
+      error: "Invalid Email or Password",
     });
-  } catch (error) {
-    console.log(error);
   }
+
+  const token = jwt.sign(
+    { id: user.id, Email: user.Email, Name: user.Name, Role: user.Role },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "7d",
+    }
+  );
+  res.status(200).json({
+    success: "Login Success",
+    token,
+    user,
+  });
 }

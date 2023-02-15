@@ -3,9 +3,11 @@ import Head from "next/head";
 import Link from "next/link";
 import { useStore } from "../../utils/store";
 import { useState } from "react";
+
 export default function Example() {
   const [navbar, setNavbar] = useState(false);
   const { UserInfoJson } = useStore((state) => state);
+  console.log(UserInfoJson);
   return (
     <div>
       <nav className="w-full bg-gray-800 shadow">
@@ -87,7 +89,7 @@ export default function Example() {
             {UserInfoJson ? (
               <div className="flex items-center justify-between py-3 md:py-5 md:block">
                 <Link href="/profile">
-                  <h1 className=" text-white font-bold">{UserInfoJson.name}</h1>
+                  {/* <h1 className=" text-white font-bold">{UserInfoJson.Name}</h1> */}
                 </Link>
               </div>
             ) : (

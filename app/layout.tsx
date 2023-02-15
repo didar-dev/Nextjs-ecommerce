@@ -1,7 +1,7 @@
 import "./globals.css";
 import QueryWrapper from "./QueryWrapper";
 
-import Navbar from "@/components/NavBar/Navbar.jsx";
+import Navbar from "@/components/NavBar/Navbar";
 import Slides from "@/components/Header/Slides";
 // async function getData() {
 //   const res = await fetch("http://localhost:3000/api/Slides", {});

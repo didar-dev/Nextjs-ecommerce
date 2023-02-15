@@ -24,6 +24,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/(Auth)/Login/page.tsx", "app/(Auth)/Login/layout.tsx", "components/NavBar/Navbar.jsx", "middleware.js", "utils/mongodb.ts", "app/(Auth)/Register/page.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/(Auth)/Login/page.tsx", "app/(Auth)/Login/layout.tsx", "components/NavBar/Navbar.tsx", "middleware.js", "utils/mongodb.ts", "app/(Auth)/Register/page.tsx"],
   "exclude": ["node_modules"]
 }

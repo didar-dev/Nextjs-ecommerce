@@ -1,58 +1,82 @@
 "use client";
-import React, { useRef } from "react";
-import { setCookie, getCookie } from "cookies-next";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { setCookie } from "cookies-next";
 type res = {
   token: string;
 };
 export default function Login() {
-  const email = useRef("");
-  const password = useRef("");
-  async function onSubmit() {
-    const res = await fetch("/api/auth/login", {
+  const [Email, setEmail] = useState("");
+  const [Password, setPassword] = useState("");
+  const SubmitLogin = () => {
+    fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: email.current,
-        password: password.current,
+        Email,
+        Password,
       }),
+    }).then((res) => {
+      if (res.status == 200) {
+        res.json().then((data: res) => {
+          setCookie("Token", data.token);
+          toast.success("You have been logged in! 😍");
+        });
+      } else {
+        res.json().then((data) => {
+          toast.error(data.error);
+        });
+      }
     });
-    if (res.ok) {
-      setCookie("token", await res.json().then((res: res) => res.token));
-    } else {
-      alert("Login failed");
-    }
-  }
+  };
   return (
-    <div className="bg-red-100 flex flex-col items-center justify-center min-h-screen py-2">
-      <div className="flex flex-col items-center justify-center bg-white p-4 rounded-lg shadow-lg">
-        <div className="flex flex-col items-center justify-center">
-          <div className="w-full max-w-sm">
-            <h2>Login</h2>
-            <form name="form" method="post" onSubmit={() => onSubmit()}>
-              <div className="flex flex-col gap-2 justify-center">
-                <label htmlFor="email">Email</label>
+    <div
+      style={{
+        backgroundImage: `url("https://free4kwallpapers.com/uploads/originals/2015/07/18/deep-blue-background.jpg")`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundColor: "#000000",
+      }}
+      className="flex flex-col items-center justify-center"
+    >
+      <div className="h-screen flex flex-col items-center justify-center">
+        <div className="gradient-background  md:max-w-max rounded-xl shadow-lg w-full md:max">
+          <div className="bg-white rounded-xl p-5 ">
+            <div>
+              <form
+                className="Register-form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  SubmitLogin();
+                }}
+                method="POST"
+              >
                 <input
-                  onChange={(e) => (email.current = e.target.value)}
-                  type="text"
-                  className="bg-gray-200"
-                  name="email"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  value={Email}
+                  placeholder="Email"
+                  className="Hinput"
+                  type="email"
                 />
-              </div>
-              <div className="flex flex-col gap-2 justify-center">
-                <label htmlFor="password">Password</label>
                 <input
-                  type="password"
-                  onChange={(e) => (password.current = e.target.value)}
-                  className="bg-gray-200"
-                  name="password"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                  value={Password}
+                  placeholder="Password"
+                  className="Hinput"
                 />
-              </div>
-              <div className="flex flex-col gap-2 justify-center">
-                <button type="submit" className="bg-blue-500 text-white">
+                <button
+                  disabled={Email == "" || Password.length < 8 ? true : false}
+                  type="submit"
+                  className="Hbutton"
+                >
                   Login
                 </button>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       </div>
