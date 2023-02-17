@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import clientPromise from "../../utils/mongodb";
+import client from "../.././prisma/client";
 type Data = {
   error?: string;
   success?: string;
@@ -15,17 +15,23 @@ export default async function handler(
     });
   }
   try {
-    const client = await clientPromise;
-    const db = client.db("Shopping");
-    const ToDB = await db.collection("Slides");
-    const Slides = await ToDB.find(
-      {},
-      {
-        projection: {},
-      }
-    ).toArray();
-    res.status(200).json({ success: "True", Slides });
+    const Slides = await client.slide.findMany({
+      select: {
+        id: true,
+        Title: true,
+        Subtitle: true,
+        Title_ku: true,
+        Subtitle_ku: true,
+        Title_ar: true,
+        Subtitle_ar: true,
+        Image: true,
+      },
+    });
+    res.status(200).json({
+      success: "Slides fetched successfully",
+      Slides,
+    });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    console.log(error);
   }
 }

@@ -1,9 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import clientPromise from "../../../utils/mongodb";
+import client from "../../../prisma/client";
 type Data = {
-  error?: string;
-  success?: string;
-  Discounts?: any;
+  message?: string;
+  products?: any;
 };
 export default async function handler(
   req: NextApiRequest,
@@ -11,31 +10,32 @@ export default async function handler(
 ) {
   if (req.method !== "GET") {
     return res.status(405).json({
-      error: "Method not allowed",
+      message: "Method not allowed",
     });
   }
   try {
-    /// discountPercentage must be greater than 0
-    const client = await clientPromise;
-    const db = client.db("Shopping");
-    const ToDB = db.collection("Products");
-    const Discounts = await ToDB.find(
-      { discountPercentage: { $gt: 0 } },
-      {
-        projection: {
-          Name: 1,
-          Description: 1,
-          thumbnail: 1,
-          Price: 1,
-          Brand: 1,
-          discountPercentage: 1,
-          Category: 1,
-          _id: 1,
+    const products = await client.product.findMany({
+      select: {
+        id: true,
+        Name: true,
+        Description: true,
+        Price: true,
+        Thumbnail: true,
+        Images: true,
+        Stock: true,
+        Category: true,
+      },
+      where: {
+        Discount: {
+          gt: 0,
         },
-      }
-    ).toArray();
-    res.status(200).json({ success: "True", Discounts });
+      },
+    });
+    res.status(200).json({
+      message: "Products fetched successfully",
+      products,
+    });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    console.log(error);
   }
 }
