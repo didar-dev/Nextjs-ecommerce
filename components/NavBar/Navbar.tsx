@@ -1,13 +1,15 @@
 "use client";
-import Head from "next/head";
 import Link from "next/link";
 import { useStore } from "../../utils/store";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Example() {
   const [navbar, setNavbar] = useState(false);
   const { UserInfoJson } = useStore((state) => state);
-  console.log(UserInfoJson);
+  useEffect(() => {
+    console.log("UserInfoJson", UserInfoJson);
+  }, [UserInfoJson]);
+
   return (
     <div>
       <nav className="w-full bg-gray-800 shadow">

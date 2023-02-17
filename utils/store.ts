@@ -1,7 +1,6 @@
-"use client";
 import { create } from "zustand";
 type Store = {
-  UserInfoJson: string;
+  UserInfoJson: any;
   Add: (value: string) => void;
 };
 export const useStore = create<Store>((set) => ({
