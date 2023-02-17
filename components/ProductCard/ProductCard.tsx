@@ -6,20 +6,22 @@ import "swiper/swiper.min.css";
 export default function ProductCard({ item }: any) {
   return (
     <div
-      className={`  h-60 w-60
+      className={`  h-60 w-60 m-4 bg-white 
       flex flex-col justify-center items-center
-      bg-gray-200
-      rounded-md shadow-md
-      m-2 p-2
+      rounded-md shadow-lg border border-gray-200 border-opacity-50
       `}
-      style={{
-        backgroundImage: `url(${item.Thumbnail})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
     >
-      {item.Thumbnail}
+      <div
+        className={`h-full w-full `}
+        style={{
+          backgroundImage: `url(${item.Thumbnail})`,
+          backgroundSize: "100% auto",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        dw
+      </div>
     </div>
   );
 }

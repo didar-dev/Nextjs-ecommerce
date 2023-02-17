@@ -14,7 +14,7 @@ async function getSlides() {
 }
 async function getDiscounts() {
   const res = await fetch(
-    "http://localhost:3000/api/Products/Discounts?Percentage=50&Quantity=2",
+    "http://localhost:3000/api/Products/Discounts?Percentage=50&Quantity=4",
     {}
   );
   const discounts = await res.json();
