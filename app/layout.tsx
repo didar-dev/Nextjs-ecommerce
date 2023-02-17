@@ -13,7 +13,10 @@ async function getSlides() {
   return slides.Slides;
 }
 async function getDiscounts() {
-  const res = await fetch("http://localhost:3000/api/Products/Discounts", {});
+  const res = await fetch(
+    "http://localhost:3000/api/Products/Discounts?Percentage=50&Quantity=2",
+    {}
+  );
   const discounts = await res.json();
   if (!res.ok) {
     throw new Error(discounts.message || "Something went wrong!");
@@ -34,7 +37,11 @@ export default async function RootLayout({
       <body>
         <QueryWrapper>
           <Navbar />
-          <div className=" flex flex-col items-center justify-center">
+          <div
+            className=" w-5/6 flex flex-col items-center justify-center
+          mx-auto
+          "
+          >
             <Slides data={data} />
             <Discounts data={discounts} />
             {children}

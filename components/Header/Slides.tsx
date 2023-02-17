@@ -24,7 +24,6 @@ export default function Slides({ data }: any) {
         style={{
           width: "100%",
           height: "350px",
-          maxWidth: "1469px",
           borderRadius: "0 0 10px 10px",
         }}
       >
