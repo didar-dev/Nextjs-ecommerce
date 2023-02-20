@@ -1,6 +1,5 @@
 import "./globals.css";
 import QueryWrapper from "./QueryWrapper";
-
 import Navbar from "@/components/NavBar/Navbar";
 import Slides from "@/components/Header/Slides";
 import Discounts from "@/components/Discounts/Discounts";

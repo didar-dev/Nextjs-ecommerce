@@ -6,7 +6,7 @@ import "swiper/swiper.min.css";
 export default function ProductCard({ item }: any) {
   return (
     <div
-      className="h-60 w-60 m-4 bg-white 
+      className="h-60 w-60  bg-white 
       flex flex-col justify-center items-center
       rounded-md shadow-lg border border-gray-200 border-opacity-50"
     >
