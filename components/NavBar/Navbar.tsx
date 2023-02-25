@@ -6,10 +6,6 @@ import { useState, useEffect } from "react";
 export default function Example() {
   const [navbar, setNavbar] = useState(false);
   const { UserInfoJson } = useStore((state) => state);
-  useEffect(() => {
-    console.log("UserInfoJson", UserInfoJson);
-  }, [UserInfoJson]);
-
   return (
     <div>
       <nav className="w-full bg-gray-800 shadow">
