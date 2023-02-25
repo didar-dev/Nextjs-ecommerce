@@ -1,13 +1,15 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { setCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 type res = {
   token: string;
 };
 export default function Login() {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
+  const Router = useRouter();
   const SubmitLogin = () => {
     fetch("/api/auth/login", {
       method: "POST",
@@ -22,6 +24,7 @@ export default function Login() {
           setCookie("Token", data.token);
           toast.success("You have been logged in! 😍");
         });
+        Router.push("/");
       } else {
         res.json().then((data) => {
           toast.error(data.error);
@@ -30,15 +33,7 @@ export default function Login() {
     });
   };
   return (
-    <div
-      style={{
-        backgroundImage: `url("https://free4kwallpapers.com/uploads/originals/2015/07/18/deep-blue-background.jpg")`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundColor: "#000000",
-      }}
-      className="flex flex-col items-center justify-center"
-    >
+    <div className="flex flex-col items-center justify-center">
       <div className="h-screen flex flex-col items-center justify-center">
         <div className="gradient-background  md:max-w-max rounded-xl shadow-lg w-full md:max">
           <div className="bg-white rounded-xl p-5 ">

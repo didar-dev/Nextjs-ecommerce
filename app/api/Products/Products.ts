@@ -1,19 +1,18 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import client from "../../../prisma/client";
 type Data = {
   message?: string;
-
   products?: any;
 };
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  if (req.method !== "GET") {
-    return res.status(405).json({
-      message: "Method not allowed",
-    });
+export default async function GET(
+  req: { method: string },
+  res: {
+    status: (arg0: number) => {
+      (): any;
+      new (): any;
+      json: { (arg0: { message: string; products?: any }): void; new (): any };
+    };
   }
+) {
   try {
     const products = await client.product.findMany({
       select: {
