@@ -87,7 +87,7 @@ export default function Example() {
             {UserInfoJson ? (
               <div className="flex items-center justify-between py-3 md:py-5 md:block">
                 <Link href="/profile">
-                  {/* <h1 className=" text-white font-bold">{UserInfoJson.Name}</h1> */}
+                  <h1 className=" text-white font-bold">{UserInfoJson.Name}</h1>
                 </Link>
               </div>
             ) : (

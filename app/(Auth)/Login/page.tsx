@@ -1,36 +1,48 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { setCookie } from "cookies-next";
+import { useStore } from "../../../utils/store";
+import { getCookies, getCookie, setCookies, removeCookies } from "cookies-next";
 import { useRouter } from "next/navigation";
 type res = {
   token: string;
+  user: any;
 };
 export default function Login() {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
+  const { Add, UserInfoJson } = useStore((state) => state);
+
   const Router = useRouter();
-  const SubmitLogin = () => {
-    fetch("/api/auth/login", {
+  const SubmitLogin = async () => {
+    const res = await fetch("/api/Login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         Email,
         Password,
       }),
-    }).then((res) => {
-      if (res.status == 200) {
-        res.json().then((data: res) => {
-          setCookie("Token", data.token);
-          toast.success("You have been logged in! 😍");
-        });
-        Router.push("/");
-      } else {
-        res.json().then((data) => {
-          toast.error(data.error);
-        });
-      }
     });
+    const Data = await res.json();
+    if (Data.error) {
+      toast.error(Data.error);
+    }
+    if (Data.token) {
+      setCookies("Token", Data.token, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/",
+        httpOnly: true,
+      });
+      setCookies("Token", Data.token, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/",
+        httpOnly: false,
+      });
+      Add(Data.user);
+      localStorage.setItem("Token", Data.token);
+      toast.success("Login Success");
+      Router.push("/");
+    }
   };
   return (
     <div className="flex flex-col items-center justify-center">
