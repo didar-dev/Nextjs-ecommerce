@@ -162,11 +162,6 @@
   dependencies:
     "glob" "7.1.7"
 
-"@next/font@13.1.6":
-  "integrity" "sha512-AITjmeb1RgX1HKMCiA39ztx2mxeAyxl4ljv2UoSBUGAbFFMg8MO7YAvjHCgFhD39hL7YTbFjol04e/BPBH5RzQ=="
-  "resolved" "https://registry.npmjs.org/@next/font/-/font-13.1.6.tgz"
-  "version" "13.1.6"
-
 "@next/swc-win32-x64-msvc@13.2.1":
   "integrity" "sha512-r3+0fSaIZT6N237iMzwUhfNwjhAFvXjqB+4iuW+wcpxW+LHm1g/IoxN8eSRcb8jPItC86JxjAxpke0QL97qd6g=="
   "resolved" "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-13.2.1.tgz"
@@ -2075,6 +2070,11 @@
     "prelude-ls" "^1.2.1"
     "type-check" "^0.4.0"
     "word-wrap" "^1.2.3"
+
+"os@^0.1.2":
+  "integrity" "sha512-ZoXJkvAnljwvc56MbvhtKVWmSkzV712k42Is2mA0+0KTSRakq5XXuXpjZjgAt9ctzl51ojhQWakQQpmOvXWfjQ=="
+  "resolved" "https://registry.npmjs.org/os/-/os-0.1.2.tgz"
+  "version" "0.1.2"
 
 "p-limit@^3.0.2":
   "integrity" "sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ=="

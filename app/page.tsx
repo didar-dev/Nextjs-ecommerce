@@ -1,5 +1,6 @@
 import Slides from "@/components/Header/Slides";
 import Discounts from "@/components/Discounts/Discounts";
+import Widgets from "@/components/Widgets/Widgets";
 async function getSlides() {
   const res = await fetch("http://localhost:3000/api/Slides", {});
   const slides = await res.json();
@@ -25,7 +26,8 @@ export default async function Page() {
   return (
     <div className=" w-5/6 flex flex-col items-center justify-center mx-auto ">
       <Slides data={data} />
-      <Discounts data={discounts} />
+      {/* <Discounts data={discounts} /> */}
+      <Widgets />
     </div>
   );
 }
