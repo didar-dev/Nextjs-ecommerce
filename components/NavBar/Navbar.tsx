@@ -1,11 +1,12 @@
 "use client";
 import Link from "next/link";
-import { useStore } from "../../utils/store";
 import { useState, useEffect } from "react";
+import { useGlobalContext } from "../../app/Context/store";
 
 export default function Example() {
   const [navbar, setNavbar] = useState(false);
-  const { UserInfoJson } = useStore((state) => state);
+  const { User } = useGlobalContext();
+
   return (
     <div>
       <nav className="w-full bg-gray-800 shadow">
@@ -84,10 +85,10 @@ export default function Example() {
             </div>
           </div>
           <div>
-            {UserInfoJson ? (
+            {User ? (
               <div className="flex items-center justify-between py-3 md:py-5 md:block">
                 <Link href="/profile">
-                  <h1 className=" text-white font-bold">{UserInfoJson.Name}</h1>
+                  <h1 className=" text-white font-bold">{User?.Name}</h1>
                 </Link>
               </div>
             ) : (

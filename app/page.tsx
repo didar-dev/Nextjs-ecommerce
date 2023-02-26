@@ -23,7 +23,7 @@ export default async function Page() {
   const data = await getSlides();
   const discounts = await getDiscounts();
   return (
-    <div className=" w-5/6 flex flex-col items-center justify-center mx-auto">
+    <div className=" w-5/6 flex flex-col items-center justify-center mx-auto ">
       <Slides data={data} />
       <Discounts data={discounts} />
     </div>
