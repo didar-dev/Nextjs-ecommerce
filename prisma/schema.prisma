@@ -88,3 +88,24 @@ model Order {
   Total     Int
   Status    String
 }
+
+model Widget {
+  id             Int      @id @default(autoincrement())
+  Slot           String   @unique
+  Title          String
+  Title_Color    String?
+  Subtitle       String
+  Subtitle_Color String?
+  Title_ku       String?
+  Subtitle_ku    String?
+  Title_ar       String?
+  Subtitle_ar    String?
+  Image          String
+  ImageAlt       String
+  ImageLink      String
+  Type           String
+  Background     String
+  Category       String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
