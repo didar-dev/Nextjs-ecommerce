@@ -10,7 +10,7 @@ import {
 } from "react";
 
 interface ContextProps {
-  User: any;
+  User: string;
   isAuth: boolean;
   Loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -19,7 +19,7 @@ interface ContextProps {
 }
 
 const GlobalContext = createContext<ContextProps>({
-  User: {},
+  User: "",
   isAuth: false,
   Loading: true,
   setLoading: (): boolean => false,
@@ -34,22 +34,23 @@ export const GlobalContextProvider = ({ children }: any) => {
   useEffect(() => {
     setLoading(true);
     const Token = localStorage.getItem("Token");
-    fetch("http://localhost:3000/api/me", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${Token}`,
-      },
-      body: JSON.stringify({
-        Token: `${Token}`,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setUser(data.user);
-        setisAuth(true);
-      });
-    console.log("Loading");
+    if (Token) {
+      fetch("http://localhost:3000/api/me", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${Token}`,
+        },
+        body: JSON.stringify({
+          Token: `${Token}`,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setUser(data.user);
+          setisAuth(true);
+        });
+    }
     setLoading(false);
   }, []);
 

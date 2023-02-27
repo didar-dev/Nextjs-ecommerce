@@ -1,13 +1,10 @@
 import Slides from "@/components/Header/Slides";
-import Discounts from "@/components/Discounts/Discounts";
-import Widgets from "@/components/Widgets/Widgets";
+import Discounts from "@/components/Home/Discounts";
+import Widgets from "@/components/Home/Widgets";
 async function getSlides() {
-  const res = await fetch("http://localhost:3000/api/Slides", {});
-  const slides = await res.json();
-  if (!res.ok) {
-    throw new Error(slides.message || "Something went wrong!");
-  }
-  return slides.Slides;
+  const res = await fetch("http://localhost:3000/api/Slides");
+  const Slides = await res.json();
+  return Slides;
 }
 async function getDiscounts() {
   const res = await fetch(
@@ -20,14 +17,20 @@ async function getDiscounts() {
   }
   return discounts.products;
 }
+async function getWidgets() {
+  const response = await fetch("http://localhost:3000/api/Widgets");
+  const widgets = await response.json();
+  return widgets;
+}
 export default async function Page() {
-  const data = await getSlides();
+  const slides = await getSlides();
   const discounts = await getDiscounts();
+  const widgets = await getWidgets();
   return (
     <div className=" w-5/6 flex flex-col items-center justify-center mx-auto ">
-      <Slides data={data} />
-      {/* <Discounts data={discounts} /> */}
-      <Widgets />
+      <Slides data={slides} />
+      <Discounts data={discounts} />
+      <Widgets data={widgets} />
     </div>
   );
 }

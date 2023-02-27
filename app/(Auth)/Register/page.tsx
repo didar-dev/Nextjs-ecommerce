@@ -10,7 +10,7 @@ export default function Register() {
   const router = useRouter();
   const SubmitRegister = () => {
     toast.loading("Loading...", { id: "register" });
-    fetch("http://localhost:3000/api/auth/register", {
+    fetch("http://localhost:3000/api/Register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -19,9 +19,12 @@ export default function Register() {
         Password,
       }),
     }).then((res) => {
+      console.log(res);
       if (res.status == 200) {
         res.json().then((data) => {
           setCookie("Token", data.token);
+          localStorage.setItem("Token", data.token);
+
           toast.success("You have been registered! 😍", { id: "register" });
           router.push("/Login");
         });
