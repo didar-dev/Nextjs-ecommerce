@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { useGlobalContext } from "../../app/Context/store";
+import { useGlobalContext } from "../../utils/Context/store";
 
 export default function Example() {
   const [navbar, setNavbar] = useState(false);

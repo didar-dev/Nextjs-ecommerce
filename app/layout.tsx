@@ -1,6 +1,6 @@
 import "./globals.css";
 import Navbar from "@/components/NavBar/Navbar";
-import { GlobalContextProvider } from "./Context/store";
+import { GlobalContextProvider } from "../utils/Context/store";
 
 export default async function RootLayout({
   children,
