@@ -1,6 +1,6 @@
-import Slides from "@/components/Header/Slides";
-import Discounts from "@/components/Home/Discounts";
-import Widgets from "@/components/Home/Widgets";
+import Slides from "../components/Header/Slides";
+import Discounts from "../components/Home/Discounts";
+import Widgets from "../components/Home/Widgets";
 async function getSlides() {
   const res = await fetch("http://localhost:3000/api/Slides");
   const Slides = await res.json();
