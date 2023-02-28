@@ -1,8 +1,9 @@
+"use client";
 import "./globals.css";
 import Navbar from "../components/NavBar/Navbar";
-import { GlobalContextProvider } from "../utils/Context/store";
+import { SessionProvider } from "next-auth/react";
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -12,12 +13,12 @@ export default async function RootLayout({
       <head />
       <body>
         <div className="min-h-screen bg-[#e3e6e6]">
-          <GlobalContextProvider>
+          <SessionProvider>
             <Navbar />
             <div className="md:w-5/6  flex flex-col items-center justify-center mx-auto">
               {children}
             </div>
-          </GlobalContextProvider>
+          </SessionProvider>
         </div>
       </body>
     </html>

@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { useStore } from "../../../utils/store";
+import { signIn } from "next-auth/react";
+
 import { getCookies, getCookie, setCookies, removeCookies } from "cookies-next";
 import { useRouter } from "next/navigation";
 type res = {
@@ -9,41 +10,24 @@ type res = {
   user: any;
 };
 export default function Login() {
-  const [Email, setEmail] = useState("");
-  const [Password, setPassword] = useState("");
-  const { Add, UserInfoJson } = useStore((state) => state);
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const Router = useRouter();
-  const SubmitLogin = async () => {
-    const res = await fetch("/api/Login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        Email,
-        Password,
-      }),
-    });
-    const Data = await res.json();
-    if (Data.error) {
-      toast.error(Data.error);
-    }
-    if (Data.token) {
-      setCookies("Token", Data.token, {
-        maxAge: 30 * 24 * 60 * 60,
-        path: "/",
-        httpOnly: true,
+
+  const SubmitLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
       });
-      setCookies("Token", Data.token, {
-        maxAge: 30 * 24 * 60 * 60,
-        path: "/",
-        httpOnly: false,
-      });
-      Add(Data.user);
-      localStorage.setItem("Token", Data.token);
-      toast.success("Login Success");
-      Router.push("/");
+      console.log("data", data);
+    } catch (error) {
+      console.log("error", error);
     }
   };
+
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="h-screen flex flex-col items-center justify-center">
@@ -52,17 +36,14 @@ export default function Login() {
             <div>
               <form
                 className="Register-form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  SubmitLogin();
-                }}
+                onSubmit={SubmitLogin}
                 method="POST"
               >
                 <input
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}
-                  value={Email}
+                  value={email}
                   placeholder="Email"
                   className="Hinput"
                   type="email"
@@ -71,12 +52,12 @@ export default function Login() {
                   onChange={(e) => {
                     setPassword(e.target.value);
                   }}
-                  value={Password}
+                  value={password}
                   placeholder="Password"
                   className="Hinput"
                 />
                 <button
-                  disabled={Email == "" || Password.length < 8 ? true : false}
+                  disabled={email == "" || password.length < 8 ? true : false}
                   type="submit"
                   className="Hbutton"
                 >
@@ -84,6 +65,14 @@ export default function Login() {
                 </button>
               </form>
             </div>
+            <button
+              onClick={() => {
+                signIn("google", { callbackUrl: "http://localhost:3000" });
+              }}
+              className="Hbutton"
+            >
+              Login with Google
+            </button>
           </div>
         </div>
       </div>
