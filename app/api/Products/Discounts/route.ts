@@ -5,6 +5,12 @@ export async function GET(request: NextRequest) {
   const Percentage = searchParams.get("Percentage");
   const Quantity = searchParams.get("Quantity");
   const products = await client.product.findMany({
+    take: Quantity ? parseInt(Quantity) : 10,
+    where: {
+      Discount: {
+        gte: Percentage ? parseInt(Percentage) : 0,
+      },
+    },
     select: {
       id: true,
       Name: true,
