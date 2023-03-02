@@ -9,8 +9,16 @@ import {
 } from "react";
 const { getCookie, setCookie } = require("cookies-next");
 import { Toaster } from "react-hot-toast";
+
+type User = {
+  id: string;
+  Name: string;
+  Email: string;
+  Role: string;
+};
+
 interface ContextProps {
-  User: object;
+  User: User;
   isAuth: boolean;
   Loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -19,11 +27,21 @@ interface ContextProps {
 }
 
 const GlobalContext = createContext<ContextProps>({
-  User: {},
+  User: {
+    id: "",
+    Name: "",
+    Email: "",
+    Role: "",
+  },
   isAuth: false,
   Loading: true,
   setLoading: (): boolean => false,
-  setUser: (): object => ({}),
+  setUser: (): object => ({
+    Name: "",
+    Email: "",
+    Password: "",
+    Token: "",
+  }),
   setisAuth: (): boolean => false,
 });
 
@@ -59,14 +77,16 @@ export const GlobalContextProvider = ({ children }: any) => {
 
   return (
     <GlobalContext.Provider
-      value={{
-        User,
-        setUser,
-        isAuth,
-        setisAuth,
-        Loading,
-        setLoading,
-      }}
+      value={
+        {
+          User,
+          setUser,
+          isAuth,
+          setisAuth,
+          Loading,
+          setLoading,
+        } as ContextProps
+      }
     >
       <Toaster />
       {children}
