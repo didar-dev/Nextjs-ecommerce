@@ -2,12 +2,13 @@ import { NextResponse } from "next/server";
 import client from "../../../prisma/client";
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+import { getCookies, setCookie, deleteCookie } from "cookies-next";
 
-export async function POST(request: Request) {
+export async function POST(request: Request, response: Response) {
   const { Email, Password } = await request.json();
   if (!Email || !Password) {
     return NextResponse.json({
-      message: "Please enter all fields",
+      error: "Please enter all fields",
     });
   }
 
@@ -25,13 +26,13 @@ export async function POST(request: Request) {
   });
   if (!user) {
     return NextResponse.json({
-      message: "User does not exist",
+      error: "User does not exist",
     });
   }
   const isMatch = await bcrypt.compare(Password, user.Password);
   if (!isMatch) {
     return NextResponse.json({
-      message: "Invalid credentials",
+      error: "Invalid credentials",
     });
   }
 
@@ -42,6 +43,7 @@ export async function POST(request: Request) {
       expiresIn: "7d",
     }
   );
+
   return NextResponse.json({
     token,
     user: {

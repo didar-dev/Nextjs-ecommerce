@@ -7,32 +7,35 @@ import {
   useState,
   useEffect,
 } from "react";
-
+const { getCookie, setCookie } = require("cookies-next");
+import { Toaster } from "react-hot-toast";
 interface ContextProps {
-  User: string;
+  User: object;
   isAuth: boolean;
   Loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
-  setUser: Dispatch<SetStateAction<string>>;
+  setUser: Dispatch<SetStateAction<object>>;
   setisAuth: Dispatch<SetStateAction<boolean>>;
 }
 
 const GlobalContext = createContext<ContextProps>({
-  User: "",
+  User: {},
   isAuth: false,
   Loading: true,
   setLoading: (): boolean => false,
-  setUser: (): string => "",
+  setUser: (): object => ({}),
   setisAuth: (): boolean => false,
 });
 
 export const GlobalContextProvider = ({ children }: any) => {
-  const [User, setUser] = useState<string>("");
+  const Usere = localStorage.getItem("User");
+  const [User, setUser] = useState<object>(Usere ? JSON.parse(Usere) : {});
   const [isAuth, setisAuth] = useState<boolean>(false);
-  const [Loading, setLoading] = useState<boolean>(false);
+  const [Loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     setLoading(true);
-    const Token = localStorage.getItem("Token");
+
+    const Token = getCookie("Token");
     if (Token) {
       fetch("http://localhost:3000/api/me", {
         method: "POST",
@@ -48,6 +51,7 @@ export const GlobalContextProvider = ({ children }: any) => {
         .then((data) => {
           setUser(data.user);
           setisAuth(true);
+          localStorage.setItem("User", JSON.stringify(data.user));
         });
     }
     setLoading(false);
@@ -55,8 +59,16 @@ export const GlobalContextProvider = ({ children }: any) => {
 
   return (
     <GlobalContext.Provider
-      value={{ User, setUser, isAuth, setisAuth, Loading, setLoading }}
+      value={{
+        User,
+        setUser,
+        isAuth,
+        setisAuth,
+        Loading,
+        setLoading,
+      }}
     >
+      <Toaster />
       {children}
     </GlobalContext.Provider>
   );

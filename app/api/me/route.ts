@@ -32,7 +32,6 @@ export async function POST(request: Request) {
       message: "User does not exist",
     });
   }
-  /// return user
   return NextResponse.json({
     user: {
       id: user.id,
