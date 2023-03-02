@@ -2,7 +2,6 @@
 import React from "react";
 
 export default function Discounts({ data }: any) {
-  console.log(data);
   return (
     <>
       {data.length > 0 && (

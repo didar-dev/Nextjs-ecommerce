@@ -19,12 +19,10 @@ export default function Register() {
         Password,
       }),
     }).then((res) => {
-      console.log(res);
       if (res.status == 200) {
         res.json().then((data) => {
           setCookie("Token", data.token);
           localStorage.setItem("Token", data.token);
-
           toast.success("You have been registered! 😍", { id: "register" });
           router.push("/Login");
         });

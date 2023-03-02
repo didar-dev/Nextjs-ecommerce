@@ -46,8 +46,7 @@ const GlobalContext = createContext<ContextProps>({
 });
 
 export const GlobalContextProvider = ({ children }: any) => {
-  const Usere = localStorage.getItem("User");
-  const [User, setUser] = useState<object>(Usere ? JSON.parse(Usere) : {});
+  const [User, setUser] = useState<object>({});
   const [isAuth, setisAuth] = useState<boolean>(false);
   const [Loading, setLoading] = useState<boolean>(true);
   useEffect(() => {

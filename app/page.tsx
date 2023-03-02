@@ -20,7 +20,9 @@ async function getDiscounts() {
   return discounts.products;
 }
 async function getWidgets() {
-  const response = await fetch("http://localhost:3000/api/Widgets");
+  const response = await fetch("http://localhost:3000/api/Widgets", {
+    cache: "no-cache",
+  });
   const widgets = await response.json();
   return widgets;
 }
