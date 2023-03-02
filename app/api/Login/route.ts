@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-
 import client from "../../../prisma/client";
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -43,7 +42,6 @@ export async function POST(request: Request) {
       expiresIn: "7d",
     }
   );
-
   return NextResponse.json({
     token,
     user: {

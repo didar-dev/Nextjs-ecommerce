@@ -10,14 +10,12 @@ export async function POST(request: Request) {
       message: "Please enter all fields",
     });
   }
-  /// verify Token
   const verified = jwt.verify(Token, process.env.JWT_SECRET);
   if (!verified) {
     return NextResponse.json({
       message: "Invalid Token",
     });
   }
-  /// get user from database
   const user = await client.user.findUnique({
     where: {
       Email: verified.Email,
