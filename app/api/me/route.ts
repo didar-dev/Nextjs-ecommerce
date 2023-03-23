@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import client from "../../../prisma/client";
 const jwt = require("jsonwebtoken");
-
 export async function POST(request: Request) {
-  /// get Token from request header Authorization
   const { Token } = await request.json();
   if (!Token) {
     return NextResponse.json({
